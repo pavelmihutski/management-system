@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { request } from '../../request';
-import { UserListSchema, UserSchema } from '../../schema/user';
+import { UserListSchema, UserSchema } from '../../schema';
 
 type OxUser = z.infer<typeof UserSchema>;
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { request } from '../../request';
-import { CreateUserSchema, UserSchema } from '../../schema/user';
+import { CreateUserSchema, UserSchema } from '../../schema';
 
 type OxaUser = z.infer<typeof UserSchema>;
 type OxaUpdateUserPayload = z.infer<typeof CreateUserSchema>;

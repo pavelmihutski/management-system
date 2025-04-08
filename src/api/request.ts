@@ -27,10 +27,6 @@ export async function request<Payload>({
 
     return response.data;
   } catch (error) {
-    if (isAxiosError(error) && error.code === 'ECONNABORTED') {
-      throw new ApplicationError('TIMEOUT', undefined, { nativeError: error });
-    }
-
     if (isAxiosError(error) && error.response) {
       throw new ApplicationError('NETWORK_REQUEST_ERROR', undefined, {
         response: error.response,

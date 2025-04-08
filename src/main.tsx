@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import { worker } from '@/api/mocks/browser';
 
-import App from './App.tsx';
+import App from './app/App.tsx';
 
 import './index.css';
 
