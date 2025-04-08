@@ -11,7 +11,8 @@
     "prepare": "husky",
     "prettier:fix": "prettier --write 'src/**/*.{ts,tsx}'",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.72.1",
@@ -36,6 +37,7 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "gh-pages": "^6.3.0",
     "globals": "^15.15.0",
     "msw": "^2.7.3",
     "playwright": "^1.51.1",
