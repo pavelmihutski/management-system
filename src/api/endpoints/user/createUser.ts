@@ -3,9 +3,12 @@ import { z } from 'zod';
 import { request } from '../../request';
 import { CreateUserSchema, UserSchema } from '../../schema/user';
 
-type OxCreateUserPayload = z.infer<typeof CreateUserSchema>;
+type OxaCreateUserPayload = z.infer<typeof CreateUserSchema>;
+type OxaCreateUser = z.infer<typeof UserSchema>;
 
-export const createUser = async (payload: OxCreateUserPayload) => {
+export const createUser = async (
+  payload: Partial<OxaCreateUserPayload>,
+): Promise<OxaCreateUser> => {
   return request({
     url: '/users',
     method: 'post',

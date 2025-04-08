@@ -7,7 +7,7 @@ import { isZodError } from './utils';
 
 export type RequestParams<Payload> = {
   url: string;
-  method?: 'get' | 'post';
+  method?: 'get' | 'post' | 'put';
   config?: AxiosRequestConfig;
   schema?: z.ZodSchema<Payload>;
 };

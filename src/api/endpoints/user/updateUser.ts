@@ -1,14 +1,18 @@
 import { z } from 'zod';
 
 import { request } from '../../request';
-import { UserSchema } from '../../schema/user';
+import { CreateUserSchema, UserSchema } from '../../schema/user';
 
 type OxaUser = z.infer<typeof UserSchema>;
+type OxaUpdateUserPayload = z.infer<typeof CreateUserSchema>;
 
-export const updateUser = async (user: OxaUser) => {
+export const updateUser = async (
+  id: number,
+  user: Partial<OxaUpdateUserPayload>,
+): Promise<OxaUser> => {
   return request({
-    url: `/users/${user.id}`,
-    method: 'post',
+    url: `/users/${id}`,
+    method: 'put',
     schema: UserSchema,
     config: { data: user },
   });

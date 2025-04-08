@@ -12,14 +12,6 @@ export class ApplicationError extends Error {
   context?: ApplicationErrorContext;
 }
 
-export type ApplicationErrorCode =
-  | 'VALIDATION_ERROR'
-  // Network request completed and server returned error 4xx/5xx
-  | 'NETWORK_REQUEST_ERROR'
-  // Network request "hard" fail(wasn't able to complete the request) - CORS, no internet, etc.
-  | 'NETWORK_ERROR'
-  | 'TIMEOUT'
-  | 'RUNTIME'
-  | 'CONFIGURATION';
+export type ApplicationErrorCode = 'VALIDATION_ERROR' | 'NETWORK_REQUEST_ERROR' | 'NETWORK_ERROR';
 
 type ApplicationErrorContext = Record<string, unknown>;
