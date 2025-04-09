@@ -506,4 +506,4 @@ cookie/index.js:
   padding: 20px;
 `,HO=()=>ye.jsx(q4,{children:ye.jsx(BO,{})});function FO({children:a}){return ye.jsx(OT,{client:kh,children:a})}function PO({children:a}){return ye.jsx(O4,{children:a})}function ZO({children:a}){return ye.jsx(PO,{children:ye.jsx(FO,{children:a})})}V0`
   ${z4}
-`;function GO(){return ye.jsx(ZO,{children:ye.jsx(HO,{})})}const $O=async()=>{await vC.start(),yE.createRoot(document.getElementById("root")).render(ye.jsx(ze.StrictMode,{children:ye.jsx(GO,{})}))};$O();
+`;function GO(){return ye.jsx(ZO,{children:ye.jsx(HO,{})})}const $O=async()=>{await vC.start({serviceWorker:{url:"/managment-system/mockServiceWorker.js"}}),yE.createRoot(document.getElementById("root")).render(ye.jsx(ze.StrictMode,{children:ye.jsx(GO,{})}))};$O();
