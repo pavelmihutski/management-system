@@ -1,11 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { createUsersQueryOptions } from './queries';
 
-export function useUsers() {
-  const [searchValue, setSearchValue] = useState('');
-
+export function useUsers(searchValue?: string) {
   const { data, isLoading, error } = useQuery(createUsersQueryOptions(searchValue));
 
   const users = useMemo(() => {
@@ -16,5 +14,5 @@ export function useUsers() {
     return data;
   }, [data]);
 
-  return { data: users, isLoading, error, search: setSearchValue };
+  return { data: users, isLoading, error };
 }

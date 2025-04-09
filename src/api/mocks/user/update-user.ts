@@ -1,4 +1,4 @@
-import { HttpResponse, PathParams } from 'msw';
+import { delay, HttpResponse, PathParams } from 'msw';
 import { http } from 'msw';
 import { z } from 'zod';
 
@@ -24,6 +24,8 @@ export const updateUser = http.put<PathParams, OxaUser>('/users/:id', async ({ r
   const body = await request.json();
 
   const schema = schemas.find(schema => schema.match(body));
+
+  await delay();
 
   if (schema) {
     return schema.getResponse();

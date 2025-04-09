@@ -34,7 +34,7 @@ describe('useUpdateUser', () => {
 
     await fetchUsersQuery();
 
-    const users = queryClient.getQueryData<User[]>(queryKeys.users());
+    const users = queryClient.getQueryData<Array<User>>(queryKeys.users());
 
     expect(users).toHaveLength(4);
 
@@ -45,7 +45,7 @@ describe('useUpdateUser', () => {
       });
     });
 
-    const updatedUsers = queryClient.getQueryData<User[]>(queryKeys.users());
+    const updatedUsers = queryClient.getQueryData<Array<User>>(queryKeys.users());
 
     expect(updatedUsers).toHaveLength(4);
 
@@ -57,7 +57,7 @@ describe('useUpdateUser', () => {
       wrapper: AllProviders,
     });
 
-    const users = queryClient.getQueryData<User[]>(queryKeys.users());
+    const users = queryClient.getQueryData<Array<User>>(queryKeys.users());
 
     expect(users).toBeUndefined();
 
@@ -65,7 +65,7 @@ describe('useUpdateUser', () => {
       await expect(result.current.update({ id: 1, name: 'bad-request' })).rejects.toThrowError('NETWORK_REQUEST_ERROR');
     });
 
-    const updatedUsers = queryClient.getQueryData<User[]>(queryKeys.users());
+    const updatedUsers = queryClient.getQueryData<Array<User>>(queryKeys.users());
 
     expect(updatedUsers).toBeUndefined();
   });

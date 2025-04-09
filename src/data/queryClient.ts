@@ -7,6 +7,7 @@ export const queryClient = new QueryClient({
     queries: {
       networkMode: 'always',
       staleTime: FIVE_MINUTES,
+      retry: false,
     },
     mutations: {
       networkMode: 'always',

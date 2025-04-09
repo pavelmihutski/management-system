@@ -4,6 +4,7 @@ import { User } from './types';
 
 export function createUser(user: User) {
   return queryClient.setQueryData<Array<User>>(queryKeys.users(), data => {
+    console.log(data, 'first');
     if (!data) {
       return [user];
     }

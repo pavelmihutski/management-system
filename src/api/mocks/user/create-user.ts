@@ -1,4 +1,4 @@
-import { http, HttpResponse } from 'msw';
+import { delay, http, HttpResponse } from 'msw';
 import { PathParams } from 'msw';
 import { z } from 'zod';
 
@@ -19,6 +19,8 @@ export const createUser = http.post<PathParams, OxaCreateUser>('/users', async (
   const body = await request.json();
 
   const schema = schemas.find(schema => schema.match(body));
+
+  await delay();
 
   if (schema) {
     return schema.getResponse();

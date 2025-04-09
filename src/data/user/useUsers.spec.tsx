@@ -54,13 +54,20 @@ describe('useUsers', () => {
       wrapper: AllProviders,
     });
 
-    result.current.search('John');
-
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(result.current.data).toHaveLength(1);
+    const { result: result2 } = renderHook(() => useUsers('John'), {
+      wrapper: AllProviders,
+    });
+
+    await waitFor(() => {
+      expect(result2.current.isLoading).toBe(false);
+    });
+
+    expect(result2.current.data).toHaveLength(1);
+
     expect(result.current.data[0]).toStrictEqual({
       id: 1,
       name: 'John',
@@ -70,11 +77,9 @@ describe('useUsers', () => {
   });
 
   it('should return the empty array when the match is not found', async () => {
-    const { result } = renderHook(() => useUsers(), {
+    const { result } = renderHook(() => useUsers('no-match'), {
       wrapper: AllProviders,
     });
-
-    result.current.search('no-match');
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
