@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
-import { UserSchema } from '../../schema/user';
+import { User } from '@/data';
 
-type OxUser = z.infer<typeof UserSchema>;
+import { UserSchema } from '../../schema';
 
-export const processUser = (user: OxUser): OxUser => {
+type OxaUser = z.infer<typeof UserSchema>;
+
+export const processUser = (user: OxaUser): User => {
   return user;
 };

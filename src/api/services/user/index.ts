@@ -1,3 +1,3 @@
 export * from './createUser';
-export * from './fetchUser';
+export * from './fetchUsers';
 export * from './updateUser';

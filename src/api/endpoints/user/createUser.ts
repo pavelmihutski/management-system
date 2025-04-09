@@ -6,9 +6,7 @@ import { CreateUserSchema, UserSchema } from '../../schema';
 type OxaCreateUserPayload = z.infer<typeof CreateUserSchema>;
 type OxaCreateUser = z.infer<typeof UserSchema>;
 
-export const createUser = async (
-  payload: Partial<OxaCreateUserPayload>,
-): Promise<OxaCreateUser> => {
+export const createUser = async (payload: Partial<OxaCreateUserPayload>): Promise<OxaCreateUser> => {
   return request({
     url: '/users',
     method: 'post',

@@ -16,7 +16,7 @@ describe('createUser', () => {
     });
   });
 
-  it('should return a bad request', async () => {
+  it('should throw error when api error occurs', async () => {
     await expect(createUser({ name: 'bad-request' })).rejects.toThrowError('NETWORK_REQUEST_ERROR');
   });
 });

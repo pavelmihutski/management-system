@@ -2,10 +2,26 @@ import { renderHook, waitFor } from '@testing-library/react';
 
 import { AllProviders } from '@/app/providers';
 
+import { queryClient } from '../queryClient';
 import { useUsers } from './useUsers';
 
-afterAll(() => {
+beforeEach(() => {
   vi.clearAllMocks();
+
+  queryClient.clear();
+});
+
+beforeAll(() => {
+  queryClient.setDefaultOptions({
+    queries: {
+      staleTime: 1 * 1000,
+      gcTime: 1 * 1000,
+    },
+  });
+});
+
+afterAll(() => {
+  queryClient.clear();
 });
 
 describe('useUsers', () => {
@@ -31,5 +47,39 @@ describe('useUsers', () => {
       status: 'Working',
       img: 'example1',
     });
+  });
+
+  it('should return the users with the search value', async () => {
+    const { result } = renderHook(() => useUsers(), {
+      wrapper: AllProviders,
+    });
+
+    result.current.search('John');
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.data).toHaveLength(1);
+    expect(result.current.data[0]).toStrictEqual({
+      id: 1,
+      name: 'John',
+      status: 'Working',
+      img: 'example1',
+    });
+  });
+
+  it('should return the empty array when the match is not found', async () => {
+    const { result } = renderHook(() => useUsers(), {
+      wrapper: AllProviders,
+    });
+
+    result.current.search('no-match');
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.data).toHaveLength(0);
   });
 });

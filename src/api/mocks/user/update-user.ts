@@ -19,26 +19,23 @@ const schemas = [
   },
 ];
 
-export const updateUser = http.put<PathParams, OxaUser>(
-  '/users/:id',
-  async ({ request, params }) => {
-    const { id } = params;
-    const body = await request.json();
+export const updateUser = http.put<PathParams, OxaUser>('/users/:id', async ({ request, params }) => {
+  const { id } = params;
+  const body = await request.json();
 
-    const schema = schemas.find(schema => schema.match(body));
+  const schema = schemas.find(schema => schema.match(body));
 
-    if (schema) {
-      return schema.getResponse();
-    }
+  if (schema) {
+    return schema.getResponse();
+  }
 
-    const index = usersList.findIndex(user => user.id === Number(id));
+  const index = usersList.findIndex(user => user.id === Number(id));
 
-    const updatedUser = { ...usersList[index], ...body };
+  const updatedUser = { ...usersList[index], ...body };
 
-    if (index !== -1) {
-      usersList[index] = updatedUser;
-    }
+  if (index !== -1) {
+    usersList[index] = updatedUser;
+  }
 
-    return HttpResponse.json(updatedUser, { status: 200 });
-  },
-);
+  return HttpResponse.json(updatedUser, { status: 200 });
+});

@@ -1,10 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { createUserQueryOptions } from './queries';
+import { createUsersQueryOptions } from './queries';
 
 export function useUsers() {
-  const { data, isLoading, error } = useQuery(createUserQueryOptions());
+  const [searchValue, setSearchValue] = useState('');
+
+  const { data, isLoading, error } = useQuery(createUsersQueryOptions(searchValue));
 
   const users = useMemo(() => {
     if (!data) {
@@ -14,5 +16,5 @@ export function useUsers() {
     return data;
   }, [data]);
 
-  return { data: users, isLoading, error };
+  return { data: users, isLoading, error, search: setSearchValue };
 }

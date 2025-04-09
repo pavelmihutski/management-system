@@ -16,9 +16,7 @@ describe('updateUser', () => {
     });
   });
 
-  it('should return a bad request', async () => {
-    await expect(updateUser(1, { name: 'bad-request' })).rejects.toThrowError(
-      'NETWORK_REQUEST_ERROR',
-    );
+  it('should throw error when api error occurs', async () => {
+    await expect(updateUser(1, { name: 'bad-request' })).rejects.toThrowError('NETWORK_REQUEST_ERROR');
   });
 });
