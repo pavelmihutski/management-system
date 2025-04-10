@@ -29,6 +29,7 @@ export const createUser = http.post<PathParams, OxaCreateUser>('/users', async (
   const newUser: OxaUser = {
     id: usersList.length + 1,
     ...body,
+    img: `https://i.pravatar.cc/150?img=${usersList.length + 1}`,
   };
 
   usersList.push(newUser);

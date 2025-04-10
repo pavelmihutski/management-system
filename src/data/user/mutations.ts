@@ -3,8 +3,9 @@ import { queryKeys } from './queries';
 import { User } from './types';
 
 export function createUser(user: User) {
+  queryClient.invalidateQueries({ queryKey: ['USERS'] });
+
   return queryClient.setQueryData<Array<User>>(queryKeys.users(), data => {
-    console.log(data, 'first');
     if (!data) {
       return [user];
     }

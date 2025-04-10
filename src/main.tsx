@@ -5,10 +5,12 @@ import { worker } from '@/api/mocks/browser';
 
 import App from './app/App.tsx';
 
-import './index.css';
-
 const start = async () => {
-  await worker.start();
+  await worker.start({
+    serviceWorker: {
+      url: '/management-system/mockServiceWorker.js',
+    },
+  });
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>

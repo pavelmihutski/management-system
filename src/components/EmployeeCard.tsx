@@ -1,47 +1,71 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import styled from 'styled-components';
+
+import { EmployeeStatus } from '@/data';
+
+import { StatusSelect } from './controls/StatusSelect';
 
 type EmployeeCardProps = {
   name: string;
   avatar: string;
-  status: string;
+  status: EmployeeStatus;
+  onStatusChange: (newStatus: EmployeeStatus) => Promise<void>;
 };
 
-export const EmployeeCard = memo(({ name, avatar, status }: EmployeeCardProps) => {
+export const EmployeeCard = memo(({ name, avatar, status, onStatusChange }: EmployeeCardProps) => {
+  const [isStatusUpdating, setIsStatusUpdating] = useState(false);
+
+  const handleChange = async (newStatus: EmployeeStatus) => {
+    setIsStatusUpdating(true);
+
+    await onStatusChange(newStatus);
+
+    setIsStatusUpdating(false);
+  };
+
   return (
     <Card>
       <Avatar src={avatar} alt={name} />
-      <Name>{name}</Name>
-      <Status>{status}</Status>
+      <Info>
+        <Name>{name}</Name>
+        <StatusSelect status={status} onChange={handleChange} isUpdating={isStatusUpdating} />
+      </Info>
     </Card>
   );
 });
 
-export const Card = styled.div`
+const Card = styled.div`
   background: white;
   border-radius: 10px;
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.05);
   padding: 20px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  align-items: end;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0px 4px 20px rgba(0, 123, 255, 0.3);
+  }
 `;
 
-export const Avatar = styled.img`
-  width: 80px;
-  height: 80px;
+const Avatar = styled.img`
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 10px;
+  margin-right: 20px;
 `;
 
-export const Name = styled.h3`
+const Info = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+`;
+
+const Name = styled.h3`
   margin: 0;
   font-size: 18px;
-`;
-
-export const Status = styled.div`
-  margin-top: 10px;
-  font-size: 14px;
-  color: gray;
+  color: #2c3e50;
 `;

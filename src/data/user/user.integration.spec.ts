@@ -4,8 +4,11 @@ import { waitFor } from '@testing-library/react';
 import { AllProviders } from '@/app/providers';
 
 import { queryClient } from '../queryClient';
+import { queryKeys } from './queries';
+import { User } from './types';
 import { useCreateUser } from './useCreateUser';
 import { useUsers } from './useUsers';
+
 describe('integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -93,5 +96,33 @@ describe('integration', () => {
     });
 
     expect(result.current.data).toHaveLength(5);
+  });
+
+  it('should refetch users if it was previously cached when creating a new user with the same name', async () => {
+    const { result } = renderHook(() => useUsers('test'), {
+      wrapper: AllProviders,
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+
+    expect(result.current.data).toHaveLength(0);
+
+    const { result: createResult } = renderHook(() => useCreateUser(), {
+      wrapper: AllProviders,
+    });
+
+    await act(async () => {
+      await createResult.current.create({
+        name: 'test',
+        status: 'active',
+        img: 'https://example.com/image.png',
+      });
+    });
+
+    const users = queryClient.getQueryData<Array<User>>(queryKeys.users());
+
+    expect(users).toHaveLength(1);
   });
 });

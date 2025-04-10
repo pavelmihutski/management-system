@@ -3,7 +3,7 @@ import path from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  base: './',
+  base: '/management-system/',
   plugins: [react()],
   resolve: {
     alias: {
