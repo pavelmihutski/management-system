@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { FaPlus, FaSearch } from 'react-icons/fa';
 import styled from 'styled-components';
 
@@ -15,7 +14,7 @@ type ControlsProps = {
   isOpen: boolean;
 };
 
-export const Controls = ({ status, onStatusChange, search, onSearchChange, onCreate, isOpen }: ControlsProps) => {
+export const Controls = memo(({ status, onStatusChange, search, onSearchChange, onCreate, isOpen }: ControlsProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -31,23 +30,25 @@ export const Controls = ({ status, onStatusChange, search, onSearchChange, onCre
       </CreateButton>
 
       <SearchWrapper>
-        <FaSearch />
-        <SearchInput
-          ref={inputRef}
-          type="text"
-          placeholder="Type to search"
-          value={search}
-          onChange={e => onSearchChange(e.target.value)}
-        />
-      </SearchWrapper>
+        <SearchInputWrapper>
+          <FaSearch />
+          <SearchInput
+            ref={inputRef}
+            type="text"
+            placeholder="Type to search"
+            value={search}
+            onChange={e => onSearchChange(e.target.value)}
+          />
+        </SearchInputWrapper>
 
-      <Divider />
-      <StatusSelectWrapper>
-        <StatusSelect status={status || 'Working'} onChange={onStatusChange} />
-      </StatusSelectWrapper>
+        <Divider />
+        <StatusSelectWrapper>
+          <StatusSelect status={status || 'Working'} onChange={onStatusChange} />
+        </StatusSelectWrapper>
+      </SearchWrapper>
     </ControlsWrapper>
   );
-};
+});
 
 const ControlsWrapper = styled.div`
   display: flex;
@@ -56,10 +57,19 @@ const ControlsWrapper = styled.div`
   gap: 16px;
 `;
 
+const SearchWrapper = styled.div`
+  display: flex;
+  gap: 16px;
+  background-color: #fff;
+  padding: 16px;
+  width: 100%;
+  border-radius: 6px;
+`;
+
 const CreateButton = styled.button`
   background-color: #0070f3;
   color: white;
-  padding: 14px 30px;
+  padding: 24px 30px;
   font-size: 14px;
   font-weight: 500;
   border: none;
@@ -75,7 +85,7 @@ const CreateButton = styled.button`
   }
 `;
 
-const SearchWrapper = styled.div`
+const SearchInputWrapper = styled.div`
   display: flex;
   align-items: center;
   background: #ffffff;

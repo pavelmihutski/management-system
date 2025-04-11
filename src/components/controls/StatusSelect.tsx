@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import styled from 'styled-components';
 
 import { EmployeeStatus, employeeStatuses } from '@/data';
@@ -16,7 +16,7 @@ type StatusSelectProps = {
   isUpdating?: boolean;
 };
 
-export const StatusSelect = ({ status, onChange, isUpdating = false }: StatusSelectProps) => {
+export const StatusSelect = memo(({ status, onChange, isUpdating = false }: StatusSelectProps) => {
   const [open, setOpen] = useState(false);
 
   const handleSelect = async (newStatus: EmployeeStatus) => {
@@ -51,7 +51,7 @@ export const StatusSelect = ({ status, onChange, isUpdating = false }: StatusSel
       )}
     </StyledDropdown>
   );
-};
+});
 
 const StyledDropdown = styled.div`
   position: relative;

@@ -1,13 +1,15 @@
-import { useCallback, useState } from 'react';
+import { lazy, Suspense, useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
-import { EmployeeCard, Grid } from '@/components';
-import { SkeletonCard } from '@/components';
-import { CreateEmployeeModal } from '@/components/Modal';
+import { EmployeeCard, Grid, SkeletonCard } from '@/components';
 import { Employee, EmployeeStatus, useCreateEmployee, useEmployees, useUpdateEmployee } from '@/data';
 import { useDebounce } from '@/hooks';
 
 import { Controls } from './components/Controls';
+
+const CreateEmployeeModal = lazy(() =>
+  import('@/components/modal').then(module => ({ default: module.CreateEmployeeModal })),
+);
 
 export const EmployeeGrid = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -19,6 +21,14 @@ export const EmployeeGrid = () => {
 
   const { create } = useCreateEmployee();
   const { update } = useUpdateEmployee();
+
+  const handleSubmit = useCallback(() => {
+    setOpen(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   const handleStatusChange = useCallback(
     async (employee: Employee) => {
@@ -32,13 +42,21 @@ export const EmployeeGrid = () => {
       try {
         await create(employee);
       } catch (error) {
-        console.log('error', error);
+        console.error('Create error:', error);
       }
     },
     [create],
   );
 
-  const renderEmployees = useCallback(() => {
+  const filteredEmployees = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    return data.filter(employee => employee.status === status);
+  }, [data, status]);
+
+  const content = useMemo(() => {
     if (isLoading) {
       return (
         <Wrapper>
@@ -55,26 +73,28 @@ export const EmployeeGrid = () => {
       return <Wrapper>Ooops, something went wrong.</Wrapper>;
     }
 
-    const employees = status ? data.filter(e => e.status === status) : data;
-
-    if (employees.length === 0) {
+    if (filteredEmployees.length === 0) {
       return <Wrapper>No employees found</Wrapper>;
     }
 
     return (
       <Grid>
-        {employees.map(employee => (
-          <EmployeeCard
-            key={employee.id}
-            name={employee.name}
-            avatar={employee.img}
-            status={employee.status}
-            onStatusChange={status => handleStatusChange({ ...employee, status })}
-          />
-        ))}
+        {filteredEmployees.map(employee => {
+          const onStatusChange = (status: EmployeeStatus) => handleStatusChange({ ...employee, status });
+
+          return (
+            <EmployeeCard
+              key={employee.id}
+              name={employee.name}
+              avatar={employee.img}
+              status={employee.status}
+              onStatusChange={onStatusChange}
+            />
+          );
+        })}
       </Grid>
     );
-  }, [data, isLoading, error, status, handleStatusChange]);
+  }, [isLoading, error, filteredEmployees, handleStatusChange]);
 
   return (
     <>
@@ -84,11 +104,14 @@ export const EmployeeGrid = () => {
         search={searchValue}
         onSearchChange={setSearchValue}
         isOpen={open}
-        onCreate={() => setOpen(true)}
+        onCreate={handleSubmit}
       />
-      <CreateEmployeeModal isOpen={open} onClose={() => setOpen(false)} onCreate={handleCreate} />
 
-      {renderEmployees()}
+      {content}
+
+      <Suspense fallback={null}>
+        {open && <CreateEmployeeModal isOpen={open} onClose={handleClose} onCreate={handleCreate} />}
+      </Suspense>
     </>
   );
 };

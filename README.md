@@ -1,4 +1,23 @@
+# Management System
+
 🌐 **Live Demo**: [Management System](https://pavelmihutski.github.io/management-system)
+
+## Design Decisions
+
+- All backend-like communication was handled using service worker (**MSW**). It will also be used for **integration** and **unit tests** later.
+
+- **React Query** was chosen as an alternative to a global store and as an optimal solution for:
+
+  - managing server state,
+  - interacting with the backend, and caching previously fetched requests.
+  - Invalidation is triggered on **creation actions**.
+
+- **Zod** was chosen for:
+
+  - **runtime API response validation**, and
+  - **form validation**.
+
+- The **test execution environment** was set to **browser** to better reflect the **real execution context**.
 
 ## Getting Started
 
