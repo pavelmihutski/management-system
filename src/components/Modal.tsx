@@ -7,10 +7,10 @@ import { EmployeeStatus } from '@/data';
 
 import { StatusSelect } from './controls/StatusSelect';
 
-type CreateUserModalProps = {
+type CreateEmployeeModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onCreate: (user: { name: string; status: string }) => void;
+  onCreate: (employee: { name: string; status: string }) => void;
 };
 
 const schema = z.object({
@@ -20,7 +20,7 @@ const schema = z.object({
     .regex(/^[a-zA-Z]+$/, 'Only English alphabetical characters are allowed'),
 });
 
-export const CreateUserModal = ({ isOpen, onClose, onCreate }: CreateUserModalProps) => {
+export const CreateEmployeeModal = ({ isOpen, onClose, onCreate }: CreateEmployeeModalProps) => {
   const [name, setName] = useState('');
 
   const [status, setStatus] = useState<EmployeeStatus>('Working');

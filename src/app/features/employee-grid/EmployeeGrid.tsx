@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 import { EmployeeCard, Grid } from '@/components';
 import { SkeletonCard } from '@/components';
-import { CreateUserModal } from '@/components/Modal';
-import { EmployeeStatus, useCreateUser, User, useUpdateUser, useUsers } from '@/data';
+import { CreateEmployeeModal } from '@/components/Modal';
+import { Employee, EmployeeStatus, useCreateEmployee, useEmployees, useUpdateEmployee } from '@/data';
 import { useDebounce } from '@/hooks';
 
 import { Controls } from './components/Controls';
@@ -15,22 +15,22 @@ export const EmployeeGrid = () => {
   const [open, setOpen] = useState(false);
 
   const debouncedSearchValue = useDebounce(searchValue, 300);
-  const { data, isLoading, error } = useUsers(debouncedSearchValue);
+  const { data, isLoading, error } = useEmployees(debouncedSearchValue);
 
-  const { create } = useCreateUser();
-  const { update } = useUpdateUser();
+  const { create } = useCreateEmployee();
+  const { update } = useUpdateEmployee();
 
   const handleStatusChange = useCallback(
-    async (user: User) => {
-      await update(user);
+    async (employee: Employee) => {
+      await update(employee);
     },
     [update],
   );
 
   const handleCreate = useCallback(
-    async (user: { name: string; status: string }) => {
+    async (employee: { name: string; status: string }) => {
       try {
-        await create(user);
+        await create(employee);
       } catch (error) {
         console.log('error', error);
       }
@@ -86,7 +86,7 @@ export const EmployeeGrid = () => {
         isOpen={open}
         onCreate={() => setOpen(true)}
       />
-      <CreateUserModal isOpen={open} onClose={() => setOpen(false)} onCreate={handleCreate} />
+      <CreateEmployeeModal isOpen={open} onClose={() => setOpen(false)} onCreate={handleCreate} />
 
       {renderEmployees()}
     </>

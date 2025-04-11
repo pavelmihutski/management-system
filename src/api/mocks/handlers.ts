@@ -1,3 +1,3 @@
-import { createUser, getUsers, updateUser } from './user';
+import { createEmployee, getEmployees, updateEmployee } from './employee';
 
-export const handlers = [createUser, getUsers, updateUser];
+export const handlers = [createEmployee, getEmployees, updateEmployee];
